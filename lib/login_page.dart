@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'home_page.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -29,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const Text(
-                "Finance Tracker",
+                "Finance Tracker App",
                 style: TextStyle(
                     color: Color(0xFF354F52),
                     fontSize: 18,
@@ -109,12 +111,12 @@ class _LoginPageState extends State<LoginPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const HomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                   },
-                  child: Text(
+                  child: const Text(
                     "Login",
                     style: TextStyle(
                         color: Colors.white,
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w400),
                   ),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF52796F),
+                      backgroundColor: const Color(0xFF3E616B),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30))),
                 ),
