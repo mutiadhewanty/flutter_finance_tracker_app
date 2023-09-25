@@ -136,14 +136,15 @@ class _IncomePageState extends State<IncomePage> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => const HomePage()));
                   },
-                  child: const Text(
+                  icon: const Icon(Icons.restart_alt_rounded),
+                  label: const Text(
                     "Reset",
                     style: TextStyle(
                         color: Colors.white,
@@ -162,14 +163,15 @@ class _IncomePageState extends State<IncomePage> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => const HomePage()));
                   },
-                  child: const Text(
+                  icon: const Icon(Icons.save_alt_rounded),
+                  label: const Text(
                     "Simpan",
                     style: TextStyle(
                         color: Colors.white,
@@ -188,14 +190,15 @@ class _IncomePageState extends State<IncomePage> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(
+                child: ElevatedButton.icon(
                   onPressed: () {
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => const HomePage()));
                   },
-                  child: const Text(
+                  icon: const Icon(Icons.arrow_back_rounded),
+                  label: const Text(
                     "Kembali",
                     style: TextStyle(
                         color: Colors.white,
