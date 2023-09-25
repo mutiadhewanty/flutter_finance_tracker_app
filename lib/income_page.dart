@@ -97,9 +97,117 @@ class _IncomePageState extends State<IncomePage> {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                      border: InputBorder.none, prefixText: 'Rp '),
+                    border: InputBorder.none,
+                    isDense: true,
+                    prefixIcon: Text('   Rp '),
+                    prefixIconConstraints:
+                        BoxConstraints(minWidth: 0, minHeight: 0),
+                  ),
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              const Text(
+                'Keterangan',
+                style: TextStyle(
+                    color: Color(0xFF3E616B), fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 135,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border:
+                        Border.all(color: const Color(0xFF3E616B), width: 2.0)),
+                child: TextFormField(
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    prefixText: ' ',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const HomePage()));
+                  },
+                  child: const Text(
+                    "Reset",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFCA9E5B),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const HomePage()));
+                  },
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8AB37A),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const HomePage()));
+                  },
+                  child: const Text(
+                    "Kembali",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF557682),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                ),
+              ),
             ],
           ),
         ),
