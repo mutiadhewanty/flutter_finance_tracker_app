@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finance_tracker_app/date_picker.dart';
 
 class ExpensesPage extends StatefulWidget {
   const ExpensesPage({super.key});
@@ -8,22 +9,6 @@ class ExpensesPage extends StatefulWidget {
 }
 
 class _ExpensesPageState extends State<ExpensesPage> {
-  DateTime selectDate = DateTime.now();
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectDate) {
-      setState(() {
-        selectDate = picked;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,30 +39,12 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 height: 10,
               ),
               Container(
-                decoration: BoxDecoration(
-                    // color: const Color(0xFFCAD2C5).withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(10),
-                    border:
-                        Border.all(color: const Color(0xFF3E616B), width: 2.0)),
-                child: TextFormField(
-                  readOnly: true,
-                  controller: TextEditingController(
-                    text: "${selectDate.toLocal()}".split(' ')[0],
-                  ),
-                  onTap: () {
-                    _selectDate(context);
-                  },
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    filled: true,
-                    fillColor: Colors.transparent,
-                    suffixIcon: Icon(
-                      Icons.calendar_month_outlined,
-                      color: Color(0xFF3E616B),
-                    ),
-                  ),
-                ),
-              ),
+                  decoration: BoxDecoration(
+                      // color: const Color(0xFFCAD2C5).withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: const Color(0xFF3E616B), width: 2.0)),
+                  child: const DatePicker()),
               const SizedBox(
                 height: 15,
               ),
@@ -125,7 +92,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 child: TextFormField(
                   maxLines: null,
                   decoration: const InputDecoration(
-                    prefixText: ' ',
+                    prefixText: '   ',
                     border: InputBorder.none,
                   ),
                 ),

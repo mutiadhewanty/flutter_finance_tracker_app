@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finance_tracker_app/detail_page.dart';
 import 'package:flutter_finance_tracker_app/expenses_page.dart';
 import 'package:flutter_finance_tracker_app/income_page.dart';
+import 'package:flutter_finance_tracker_app/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -123,17 +125,26 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Column(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 15),
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xFF3E616B), width: 2.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/detail.png',
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const DetailPage()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xFF3E616B),
+                                    width: 2.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset(
+                                'assets/images/detail.png',
+                              ),
                             ),
                           ),
                         ),
@@ -145,17 +156,27 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Column(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 15),
-                          height: 130,
-                          width: 130,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color(0xFF3E616B), width: 2.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Image.asset(
-                              'assets/images/settings.png',
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SettingsPage()));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            height: 130,
+                            width: 130,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xFF3E616B),
+                                    width: 2.0)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Image.asset(
+                                'assets/images/settings.png',
+                              ),
                             ),
                           ),
                         ),
