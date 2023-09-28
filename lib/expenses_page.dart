@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_finance_tracker_app/date_picker.dart';
 
 class ExpensesPage extends StatefulWidget {
   const ExpensesPage({super.key});
@@ -39,12 +38,13 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 height: 10,
               ),
               Container(
-                  decoration: BoxDecoration(
-                      // color: const Color(0xFFCAD2C5).withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: const Color(0xFF3E616B), width: 2.0)),
-                  child: const DatePicker()),
+                decoration: BoxDecoration(
+                    // color: const Color(0xFFCAD2C5).withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(10),
+                    border:
+                        Border.all(color: const Color(0xFF3E616B), width: 2.0)),
+                // child: const DatePicker()
+              ),
               const SizedBox(
                 height: 15,
               ),

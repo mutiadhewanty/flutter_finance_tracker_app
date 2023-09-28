@@ -1,15 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_finance_tracker_app/date_picker.dart';
+import 'package:flutter_finance_tracker_app/models/finance_model.dart';
+
+import 'services/database_helper.dart';
 
 class IncomePage extends StatefulWidget {
-  const IncomePage({super.key});
+  final Finance? finance;
+  const IncomePage({Key? key, this.finance}) : super(key: key);
 
   @override
   State<IncomePage> createState() => _IncomePageState();
 }
 
 class _IncomePageState extends State<IncomePage> {
+  var keteranganController = TextEditingController();
+  var nominalController = TextEditingController();
+  late DateTime _selectedDate;
+
   @override
+  void _handleDateSelected(DateTime selectedDate) {
+    // Di sini Anda dapat menggunakan selectedDate yang diteruskan dari DatePicker.
+    setState(() {
+      _selectedDate = selectedDate;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    if (widget.finance != null) {
+      nominalController.text = widget.finance!.nominal.toString();
+      keteranganController.text = widget.finance!.keterangan;
+    }
+  }
+
+  void _saveIncomeData() async {
+    final id = widget.finance?.id;
+    final date = _selectedDate
+        .toIso8601String(); // Sesuaikan dengan cara penyimpanan tanggal di SQLite
+    final nominal = int.tryParse(nominalController.value.text) ?? 0;
+    final keterangan = keteranganController.value.text;
+
+    final finance = Finance(
+      id: id,
+      date: date,
+      nominal: nominal,
+      keterangan: keterangan,
+      kategori: 'income', // Sesuaikan dengan kategori yang sesuai
+    );
+
+    await DatabaseHelper.addFinance(finance);
+
+    // Menampilkan pesan sukses atau melakukan navigasi kembali
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Pemasukan berhasil disimpan.'),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +92,9 @@ class _IncomePageState extends State<IncomePage> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                           color: const Color(0xFF3E616B), width: 2.0)),
-                  child: const DatePicker()),
+                  child: DatePicker(
+                    onDateSelected: _handleDateSelected,
+                  )),
               const SizedBox(
                 height: 15,
               ),
@@ -62,6 +112,7 @@ class _IncomePageState extends State<IncomePage> {
                     border:
                         Border.all(color: const Color(0xFF3E616B), width: 2.0)),
                 child: TextFormField(
+                  controller: nominalController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -90,6 +141,7 @@ class _IncomePageState extends State<IncomePage> {
                     border:
                         Border.all(color: const Color(0xFF3E616B), width: 2.0)),
                 child: TextFormField(
+                  controller: keteranganController,
                   maxLines: null,
                   decoration: const InputDecoration(
                     prefixText: '   ',
@@ -136,6 +188,7 @@ class _IncomePageState extends State<IncomePage> {
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => const HomePage()));
+                    _saveIncomeData();
                   },
                   icon: const Icon(Icons.save_alt_rounded),
                   label: const Text(

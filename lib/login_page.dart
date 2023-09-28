@@ -116,6 +116,10 @@ class _LoginPageState extends State<LoginPage> {
                         MaterialPageRoute(
                             builder: (context) => const HomePage()));
                   },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF3E616B),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30))),
                   child: const Text(
                     "Login",
                     style: TextStyle(
@@ -123,10 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                         fontSize: 16,
                         fontWeight: FontWeight.w400),
                   ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF3E616B),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30))),
                 ),
               ),
               const SizedBox(
@@ -145,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: 36,
                     child: Image.network(
                         "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png"),
@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     width: 26,
                   ),
-                  Container(
+                  SizedBox(
                     height: 36,
                     child: Image.network(
                         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png"),
