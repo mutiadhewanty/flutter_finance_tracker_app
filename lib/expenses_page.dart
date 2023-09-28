@@ -1,14 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finance_tracker_app/date_picker.dart';
+import 'package:flutter_finance_tracker_app/home_page.dart';
+import 'package:flutter_finance_tracker_app/models/finance_model.dart';
+import 'package:flutter_finance_tracker_app/services/database_helper.dart';
 
 class ExpensesPage extends StatefulWidget {
-  const ExpensesPage({super.key});
+  final Finance? finance;
+  const ExpensesPage({Key? key, this.finance}) : super(key: key);
 
   @override
   State<ExpensesPage> createState() => _ExpensesPageState();
 }
 
 class _ExpensesPageState extends State<ExpensesPage> {
+  var keteranganController = TextEditingController();
+  var nominalController = TextEditingController();
+  late DateTime _selectedDate;
+
   @override
+  void _handleDateSelected(DateTime selectedDate) {
+    setState(() {
+      _selectedDate = selectedDate;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    if (widget.finance != null) {
+      nominalController.text = widget.finance!.nominal.toString();
+      keteranganController.text = widget.finance!.keterangan;
+    }
+  }
+
+  void _saveIncomeData() async {
+    final id = widget.finance?.id;
+    final date = _selectedDate.toIso8601String();
+    final nominal = int.tryParse(nominalController.value.text) ?? 0;
+    final keterangan = keteranganController.value.text;
+
+    final finance = Finance(
+      id: id,
+      date: date,
+      nominal: nominal,
+      keterangan: keterangan,
+      kategori: 'expenses',
+    );
+
+    await DatabaseHelper.addFinance(finance);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Pemasukan berhasil disimpan.'),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -38,13 +84,14 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 height: 10,
               ),
               Container(
-                decoration: BoxDecoration(
-                    // color: const Color(0xFFCAD2C5).withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(10),
-                    border:
-                        Border.all(color: const Color(0xFF3E616B), width: 2.0)),
-                // child: const DatePicker()
-              ),
+                  decoration: BoxDecoration(
+                      // color: const Color(0xFFCAD2C5).withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: const Color(0xFF3E616B), width: 2.0)),
+                  child: DatePicker(
+                    onDateSelected: _handleDateSelected,
+                  )),
               const SizedBox(
                 height: 15,
               ),
@@ -62,6 +109,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                     border:
                         Border.all(color: const Color(0xFF3E616B), width: 2.0)),
                 child: TextFormField(
+                  controller: nominalController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -90,6 +138,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                     border:
                         Border.all(color: const Color(0xFF3E616B), width: 2.0)),
                 child: TextFormField(
+                  controller: keteranganController,
                   maxLines: null,
                   decoration: const InputDecoration(
                     prefixText: '   ',
@@ -132,10 +181,11 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const HomePage()));
+                    _saveIncomeData();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                   },
                   icon: const Icon(Icons.save_alt_rounded),
                   label: const Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_finance_tracker_app/date_picker.dart';
+import 'package:flutter_finance_tracker_app/home_page.dart';
 import 'package:flutter_finance_tracker_app/models/finance_model.dart';
 
 import 'services/database_helper.dart';
@@ -19,7 +20,6 @@ class _IncomePageState extends State<IncomePage> {
 
   @override
   void _handleDateSelected(DateTime selectedDate) {
-    // Di sini Anda dapat menggunakan selectedDate yang diteruskan dari DatePicker.
     setState(() {
       _selectedDate = selectedDate;
     });
@@ -35,8 +35,7 @@ class _IncomePageState extends State<IncomePage> {
 
   void _saveIncomeData() async {
     final id = widget.finance?.id;
-    final date = _selectedDate
-        .toIso8601String(); // Sesuaikan dengan cara penyimpanan tanggal di SQLite
+    final date = _selectedDate.toIso8601String();
     final nominal = int.tryParse(nominalController.value.text) ?? 0;
     final keterangan = keteranganController.value.text;
 
@@ -45,12 +44,11 @@ class _IncomePageState extends State<IncomePage> {
       date: date,
       nominal: nominal,
       keterangan: keterangan,
-      kategori: 'income', // Sesuaikan dengan kategori yang sesuai
+      kategori: 'income',
     );
 
     await DatabaseHelper.addFinance(finance);
 
-    // Menampilkan pesan sukses atau melakukan navigasi kembali
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Pemasukan berhasil disimpan.'),
@@ -184,11 +182,11 @@ class _IncomePageState extends State<IncomePage> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const HomePage()));
                     _saveIncomeData();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                   },
                   icon: const Icon(Icons.save_alt_rounded),
                   label: const Text(

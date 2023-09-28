@@ -37,6 +37,12 @@ class _DetailPageState extends State<DetailPage> {
           itemCount: financeList?.length ?? 0,
           itemBuilder: ((context, index) {
             final finances = financeList![index];
+            Color iconColor =
+                finances.kategori == 'expenses' ? Colors.red : Colors.green;
+            IconData iconArrow = finances.kategori == 'income'
+                ? Icons.arrow_back_rounded
+                : Icons.arrow_forward_rounded;
+            String tanda = finances.kategori == 'income' ? '+' : '-';
             return Card(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,7 +53,7 @@ class _DetailPageState extends State<DetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '[+] Rp ${finances.nominal}',
+                          '[ ${tanda} ] Rp ${finances.nominal}',
                           style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
@@ -67,7 +73,17 @@ class _DetailPageState extends State<DetailPage> {
                           height: 3,
                         ),
                         Text(
-                          finances.date,
+                          '${DateTime.parse(finances.date).day}-${DateTime.parse(finances.date).month}-${DateTime.parse(finances.date).year}',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF2B4856).withOpacity(0.5)),
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Text(
+                          finances.kategori,
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -77,9 +93,9 @@ class _DetailPageState extends State<DetailPage> {
                     ),
                   ),
                   Icon(
-                    Icons.arrow_back_rounded,
+                    iconArrow,
                     size: 45,
-                    color: Colors.green.shade700,
+                    color: iconColor,
                   )
                 ],
               ),
