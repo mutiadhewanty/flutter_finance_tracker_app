@@ -50,7 +50,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Pemasukan berhasil disimpan.'),
+        content: Text('Pengeluaran berhasil disimpan.'),
       ),
     );
   }

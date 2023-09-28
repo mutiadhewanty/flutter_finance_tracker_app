@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finance_tracker_app/models/user_model.dart';
+import 'package:flutter_finance_tracker_app/services/database_helper.dart';
 
 import 'home_page.dart';
 
@@ -12,8 +14,69 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _obscureText = true;
 
-  var emailController = TextEditingController();
+  var usernameController = TextEditingController();
   var passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    final username = usernameController.text;
+    final password = passwordController.text;
+
+    final userLogin = UserModel(username: "user", password: "user");
+    await DatabaseHelper.addUser(userLogin);
+
+    if (username.isEmpty || password.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Username dan password tidak boleh kosong.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    final user = await DatabaseHelper.loginUser(username, password);
+
+    if (user != null) {
+      // Jika login berhasil, navigasikan ke halaman beranda (HomePage)
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomePage(),
+        ),
+      );
+    } else {
+      // Jika login gagal, tampilkan pesan error
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Username atau password salah.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: TextFormField(
-                  // controller: emailController,
+                  controller: usernameController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     prefixIcon:
@@ -111,10 +174,11 @@ class _LoginPageState extends State<LoginPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                    _login();
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const HomePage()));
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF3E616B),

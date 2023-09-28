@@ -19,17 +19,17 @@ class _HomePageState extends State<HomePage> {
   void _fetchFinances() async {
     final allFinances = await DatabaseHelper.getAllFinance();
 
-    print('Jumlah data sebelum: ${finances.length}');
+    // print('Jumlah data sebelum: ${finances.length}');
 
     setState(() {
       finances = allFinances ?? [];
       _calculateTotalbyCategory();
     });
 
-    print('Jumlah data setelah: ${finances.length}');
-    for (final finance in allFinances!) {
-      print('Nominal: ${finance.nominal}');
-    }
+    // print('Jumlah data setelah: ${finances.length}');
+    // for (final finance in allFinances!) {
+    //   print('Nominal: ${finance.nominal}');
+    // }
   }
 
   @override
