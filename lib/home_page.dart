@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_finance_tracker_app/detail_page.dart';
 import 'package:flutter_finance_tracker_app/expenses_page.dart';
 import 'package:flutter_finance_tracker_app/income_page.dart';
+import 'package:flutter_finance_tracker_app/models/finance_model.dart';
+import 'package:flutter_finance_tracker_app/services/database_helper.dart';
 import 'package:flutter_finance_tracker_app/settings_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,6 +14,50 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Finance> finances = [];
+
+  void _fetchFinances() async {
+    final allFinances = await DatabaseHelper.getAllFinance();
+
+    print('Jumlah data sebelum: ${finances.length}');
+
+    setState(() {
+      finances = allFinances ?? [];
+      _calculateTotalbyCategory();
+    });
+
+    print('Jumlah data setelah: ${finances.length}');
+    for (final finance in allFinances!) {
+      print('Nominal: ${finance.nominal}');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFinances();
+    _calculateTotalbyCategory();
+  }
+
+  Map<String, int> totalByCategory = {
+    'income': 0,
+    'expenses': 0,
+  };
+
+  void _calculateTotalbyCategory() {
+    for (final finance in finances) {
+      final kategori = finance.kategori;
+      final nominal = finance.nominal;
+
+      if (kategori == 'income' && nominal != null) {
+        totalByCategory['income'] = (totalByCategory['income'] ?? 0) + nominal;
+      } else if (kategori == 'expenses' && nominal != null) {
+        totalByCategory['expenses'] =
+            (totalByCategory['expenses'] ?? 0) + nominal;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,17 +74,17 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 8,
                 ),
-                const Text(
-                  'Pengeluaran: Rp 500.000',
+                Text(
+                  'Pengeluaran: Rp ${totalByCategory['expenses']}',
                   style:
                       TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
-                const Text(
-                  'Pemasukan: Rp 1.500.000',
-                  style: TextStyle(
+                Text(
+                  'Pemasukan: Rp ${totalByCategory['income']}',
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.green),
                 ),
                 const SizedBox(
