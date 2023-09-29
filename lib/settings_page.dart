@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finance_tracker_app/models/user_model.dart';
+import 'package:flutter_finance_tracker_app/services/database_helper.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -13,6 +15,74 @@ class _SettingsPageState extends State<SettingsPage> {
 
   var passwordController = TextEditingController();
   var newPasswordController = TextEditingController();
+
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Error"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showSuccessMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void onChangePassword() async {
+    final username = 'user';
+    final passwordSaatIni = passwordController.text;
+    final newPassword = newPasswordController.text;
+
+    final dbHelper = DatabaseHelper();
+
+    final existingUser = await dbHelper.getUserByUsername(username);
+    if (existingUser == null || existingUser.password != passwordSaatIni) {
+      showErrorMessage('Password saat ini tidak benar');
+      return;
+    }
+
+    final updatedUser = UserModel(
+      id: existingUser.id,
+      username: existingUser.username,
+      password: newPassword,
+    );
+
+    final rowsAffected = await dbHelper.updateUserPassword(updatedUser);
+    if (rowsAffected > 0) {
+      showSuccessMessage('Password berhasil diperbarui');
+    } else {
+      showErrorMessage('Gagal memperbarui password');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,6 +189,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
+                    onChangePassword();
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(

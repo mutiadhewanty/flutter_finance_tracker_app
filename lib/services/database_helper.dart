@@ -31,6 +31,29 @@ class DatabaseHelper {
     }, version: _version);
   }
 
+  Future<int> updateUserPassword(UserModel user) async {
+    final db = await _getDB();
+    return await db.update(
+      "User",
+      user.toJson(),
+      where: 'id = ?',
+      whereArgs: [user.id],
+    );
+  }
+
+  Future<UserModel?> getUserByUsername(String username) async {
+    final db = await _getDB();
+    final List<Map<String, dynamic>> maps = await db.query(
+      "User",
+      where: 'username = ?',
+      whereArgs: [username],
+    );
+    if (maps.isEmpty) {
+      return null;
+    }
+    return UserModel.fromJson(maps.first);
+  }
+
   static Future<int> addUser(UserModel user) async {
     final db = await _getDB();
     return await db.insert("User", user.toJson(),
