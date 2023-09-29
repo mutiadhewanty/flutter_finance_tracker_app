@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_finance_tracker_app/home_page.dart';
 import 'package:flutter_finance_tracker_app/models/user_model.dart';
 import 'package:flutter_finance_tracker_app/services/database_helper.dart';
 
@@ -217,10 +218,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const HomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                   },
                   icon: const Icon(Icons.arrow_back_rounded),
                   label: const Text(

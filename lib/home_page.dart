@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_finance_tracker_app/detail_page.dart';
 import 'package:flutter_finance_tracker_app/expenses_page.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_finance_tracker_app/income_page.dart';
 import 'package:flutter_finance_tracker_app/models/finance_model.dart';
 import 'package:flutter_finance_tracker_app/services/database_helper.dart';
 import 'package:flutter_finance_tracker_app/settings_page.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,17 +21,10 @@ class _HomePageState extends State<HomePage> {
   void _fetchFinances() async {
     final allFinances = await DatabaseHelper.getAllFinance();
 
-    // print('Jumlah data sebelum: ${finances.length}');
-
     setState(() {
       finances = allFinances ?? [];
       _calculateTotalbyCategory();
     });
-
-    // print('Jumlah data setelah: ${finances.length}');
-    // for (final finance in allFinances!) {
-    //   print('Nominal: ${finance.nominal}');
-    // }
   }
 
   @override
@@ -44,7 +39,10 @@ class _HomePageState extends State<HomePage> {
     'expenses': 0,
   };
 
+  List<FlSpot> chartData = [];
+
   void _calculateTotalbyCategory() {
+    chartData = [];
     for (final finance in finances) {
       final kategori = finance.kategori;
       final nominal = finance.nominal;
@@ -56,6 +54,16 @@ class _HomePageState extends State<HomePage> {
             (totalByCategory['expenses'] ?? 0) + nominal;
       }
     }
+
+    chartData.add(FlSpot(0, 0)); // Awal chart
+    int index = 1;
+    for (final finance in finances) {
+      final nominal = finance.nominal;
+      chartData.add(FlSpot(index.toDouble(), nominal?.toDouble() ?? 0));
+      index++;
+    }
+
+    setState(() {});
   }
 
   @override
@@ -90,11 +98,71 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 8,
                 ),
-                Image.asset(
-                  'assets/images/chart.png',
-                  height: 295,
-                  width: 245,
-                ),
+                Container(
+                    height: 200,
+                    width: 300,
+                    child: LineChart(
+                      LineChartData(
+                        gridData: FlGridData(show: false),
+                        titlesData: FlTitlesData(
+                          leftTitles: SideTitles(showTitles: false),
+                          bottomTitles: SideTitles(
+                            showTitles: true,
+                            getTitles: (value) {
+                              final index = value.toInt();
+                              if (index >= 0 && index < finances.length) {
+                                final date = DateTime.parse(finances[index]
+                                    .date); // Ganti dengan properti tanggal yang sesuai
+                                return DateFormat.MMM().format(
+                                    date); // Sesuaikan dengan format tanggal yang diinginkan
+                              }
+                              return '';
+                            },
+                          ),
+                        ),
+                        borderData: FlBorderData(
+                          show: true,
+                          border: Border.all(
+                              color: const Color(0xff37434d), width: 1),
+                        ),
+                        minX: 0,
+                        maxX: finances.length.toDouble() - 1,
+                        minY: 0,
+                        maxY: 100000, // Sesuaikan dengan skala yang sesuai
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: finances.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final nominal = entry.value.nominal;
+                              final isIncome = entry.value.kategori == 'income';
+
+                              return FlSpot(
+                                  index.toDouble(), nominal?.toDouble() ?? 0);
+                            }).toList(),
+                            isCurved: true,
+                            dotData: FlDotData(show: false),
+                            belowBarData: BarAreaData(show: false),
+                            colors: [Colors.green], // Warna garis (line)
+                            barWidth: 4, // Lebar garis (line)
+                          ),
+                          LineChartBarData(
+                            spots: finances.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final nominal = entry.value.nominal;
+                              final isIncome = entry.value.kategori == 'income';
+
+                              return FlSpot(index.toDouble(),
+                                  isIncome ? nominal?.toDouble() ?? 0 : 0);
+                            }).toList(),
+                            isCurved: true,
+                            dotData: FlDotData(show: false),
+                            belowBarData: BarAreaData(show: false),
+                            colors: [Colors.red], // Warna garis (line)
+                            barWidth: 4, // Lebar garis (line)
+                          ),
+                        ],
+                      ),
+                    )),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

@@ -154,10 +154,8 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const HomePage()));
+                    nominalController.clear();
+                    keteranganController.clear();
                   },
                   icon: const Icon(Icons.restart_alt_rounded),
                   label: const Text(
@@ -182,10 +180,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     _saveIncomeData();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                    
                   },
                   icon: const Icon(Icons.save_alt_rounded),
                   label: const Text(
@@ -209,10 +204,10 @@ class _ExpensesPageState extends State<ExpensesPage> {
                 height: 50,
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const HomePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
                   },
                   icon: const Icon(Icons.arrow_back_rounded),
                   label: const Text(
