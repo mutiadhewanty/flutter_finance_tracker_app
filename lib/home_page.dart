@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold, color: Colors.green),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 18,
                 ),
                 Container(
                     height: 200,
@@ -163,6 +163,9 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     )),
+                const SizedBox(
+                  height: 18,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
